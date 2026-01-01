@@ -134,9 +134,17 @@ ${producer.delivery_delay ? `delivery_delay = ${producer.delivery_delay}\n` : ''
     }
   }
 
-  // Note: DO bindings are NOT copied for secondary workers
-  // They require script_name reference which adds complexity
-  // The API can still access DOs via the user's worker if needed
+  // Copy Durable Object bindings with script_name reference to user's worker
+  // In multi-config mode, this allows localflare-api to access the same DO instances
+  if (config.durable_objects?.bindings?.length) {
+    for (const doBinding of config.durable_objects.bindings) {
+      toml += `[[durable_objects.bindings]]
+name = "${doBinding.name}"
+class_name = "${doBinding.class_name}"
+script_name = "${userWorkerName}"
+`
+    }
+  }
 
   return toml
 }

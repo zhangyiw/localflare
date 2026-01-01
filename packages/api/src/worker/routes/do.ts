@@ -27,6 +27,42 @@ export function createDORoutes() {
     })
   })
 
+  // Get DO ID from name or validate existing ID
+  app.post('/:binding/id', async (c) => {
+    const binding = c.req.param('binding')
+    const manifest = getManifest(c.env)
+
+    const doConfig = manifest.do.find((d) => d.binding === binding)
+    if (!doConfig) {
+      return c.json({ error: 'Durable Object binding not found' }, 404)
+    }
+
+    const namespace = c.env[binding] as DurableObjectNamespace | undefined
+    if (!namespace || typeof namespace !== 'object' || !('idFromName' in namespace)) {
+      return c.json({ error: 'Durable Object namespace not available' }, 404)
+    }
+
+    try {
+      const body = await c.req.json<{ name?: string; id?: string }>()
+
+      if (body.id) {
+        // Validate and return hex string ID
+        const doId = namespace.idFromString(body.id)
+        return c.json({ id: doId.toString() })
+      } else if (body.name) {
+        // Generate ID from name
+        const doId = namespace.idFromName(body.name)
+        return c.json({ id: doId.toString() })
+      } else {
+        // Generate a new unique ID
+        const doId = namespace.newUniqueId()
+        return c.json({ id: doId.toString() })
+      }
+    } catch (error) {
+      return c.json({ error: String(error) }, 500)
+    }
+  })
+
   // Get a stub for a DO instance
   app.get('/:binding/instances', async (c) => {
     const binding = c.req.param('binding')
