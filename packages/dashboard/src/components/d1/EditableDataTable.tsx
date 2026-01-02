@@ -574,6 +574,7 @@ export function EditableDataTable({
         enableHiding: true,
         size: 150,
         minSize: 80,
+        maxSize: 400,
       })
     }
 
@@ -599,6 +600,14 @@ export function EditableDataTable({
     return cols
   }, [schema, editable, getRowId, onCellEdit, onRowDelete, onRowEdit, getColumnFilter, handleColumnFilterChange])
 
+  // Handle sorting change - update local state and notify parent for server-side sorting
+  const handleSortingChange = useCallback((updater: SortingState | ((old: SortingState) => SortingState)) => {
+    const newSorting = typeof updater === 'function' ? updater(sorting) : updater
+    setSorting(newSorting)
+    // Notify parent for server-side sorting
+    onSortingChange?.(newSorting)
+  }, [sorting, onSortingChange])
+
   // Initialize table
   const table = useReactTable({
     data: filteredData,
@@ -609,7 +618,7 @@ export function EditableDataTable({
       columnVisibility,
       columnSizing,
     },
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange,
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnSizingChange: setColumnSizing,
@@ -729,10 +738,15 @@ export function EditableDataTable({
               checked={serverSideSort}
               onCheckedChange={(checked) => onServerSideSortChange(!!checked)}
             />
-            <Label htmlFor="server-sort" className="text-xs text-muted-foreground cursor-pointer">
+            <Label
+              htmlFor="server-sort"
+              className="text-xs text-muted-foreground cursor-pointer"
+              title="When enabled, sorting queries the database with ORDER BY to sort across all pages. When disabled, only the current page is sorted."
+            >
               <span className="flex items-center gap-1">
                 <HugeiconsIcon icon={DatabaseIcon} className="size-3" />
-                Sort all data
+                <span>Sort via DB</span>
+                <span className="text-[10px] opacity-60">(ORDER BY)</span>
               </span>
             </Label>
           </div>
@@ -779,11 +793,14 @@ export function EditableDataTable({
                   <th
                     key={header.id}
                     className={cn(
-                      "px-4 py-2.5 text-left text-xs font-medium text-muted-foreground whitespace-nowrap relative",
+                      "px-4 py-2.5 text-left text-xs font-medium text-muted-foreground whitespace-nowrap relative overflow-hidden",
                       header.column.id === 'select' && 'w-10',
                       header.column.id === 'actions' && 'w-24',
                     )}
-                    style={{ width: header.getSize() }}
+                    style={{
+                      width: header.getSize(),
+                      maxWidth: header.getSize(),
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
@@ -841,11 +858,14 @@ export function EditableDataTable({
                     <td
                       key={cell.id}
                       className={cn(
-                        "px-4 py-2 whitespace-nowrap",
+                        "px-4 py-2 whitespace-nowrap overflow-hidden",
                         cell.column.id === 'select' && 'w-10',
                         cell.column.id === 'actions' && 'w-24',
                       )}
-                      style={{ width: cell.column.getSize() }}
+                      style={{
+                        width: cell.column.getSize(),
+                        maxWidth: cell.column.getSize(),
+                      }}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>

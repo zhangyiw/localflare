@@ -49,7 +49,6 @@ import {
   useD1AllTableSchemas,
   usePagination,
   useQueryHistory,
-  useTableSettings,
   d1QueryKeys,
   type SortConfig,
 } from './hooks'
@@ -84,12 +83,6 @@ export function D1Explorer() {
   const queryClient = useQueryClient()
   const { pagination, updatePagination, goToPage, setPageSize } = usePagination(50)
   const { entries: historyEntries, addEntry: addHistoryEntry, clearHistory } = useQueryHistory()
-  const { settings, setServerSideSort: saveServerSideSort } = useTableSettings(selectedDb, selectedTable)
-
-  // Load server-side sort preference when table changes
-  useEffect(() => {
-    setServerSideSort(settings.serverSideSort)
-  }, [settings.serverSideSort, selectedDb, selectedTable])
 
   // ============================================================================
   // Queries
@@ -359,10 +352,9 @@ export function D1Explorer() {
   // Handle server-side sort toggle
   const handleServerSideSortChange = useCallback((enabled: boolean) => {
     setServerSideSort(enabled)
-    saveServerSideSort(enabled)
     // Reset to first page when toggling sort mode
     goToPage(0)
-  }, [saveServerSideSort, goToPage])
+  }, [goToPage])
 
   // ============================================================================
   // Schema for SQL autocomplete - fetches all table columns
