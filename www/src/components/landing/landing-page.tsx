@@ -204,14 +204,85 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Powered by */}
+      {/* Architecture */}
+      <section className="py-16 border-t border-zinc-100">
+        <div className="mx-auto max-w-6xl px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+            <div className="order-2 lg:order-1 rounded-xl bg-zinc-900 p-5">
+              <div className="font-mono text-xs text-zinc-400 space-y-2">
+                <div className="text-zinc-500">// Single wrangler dev process</div>
+                <div className="mt-3 pl-2 border-l-2 border-zinc-700 space-y-1">
+                  <div>Your Worker <span className="text-zinc-600">→ localhost:8787</span></div>
+                  <div className="text-zinc-600 text-[10px]">Your app code, untouched</div>
+                </div>
+                <div className="pl-2 border-l-2 border-orange-500/50 space-y-1">
+                  <div>Localflare API <span className="text-zinc-600">→ /__localflare/*</span></div>
+                  <div className="text-zinc-600 text-[10px]">Dashboard endpoints</div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-zinc-800">
+                  <div className="text-zinc-500 mb-2">// Shared binding instances</div>
+                  <div className="grid grid-cols-2 gap-1 text-[11px]">
+                    <span className="text-blue-400">D1</span>
+                    <span className="text-green-400">KV</span>
+                    <span className="text-purple-400">R2</span>
+                    <span className="text-yellow-400">Queues</span>
+                    <span className="text-pink-400">DO</span>
+                    <span className="text-cyan-400">Services</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <p className="text-xs font-medium uppercase tracking-widest text-orange-600">
+                Multi-Worker Architecture
+              </p>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-800">
+                Real bindings, not mocks
+              </h2>
+              <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
+                Localflare runs as a sidecar worker in the same wrangler process. Both workers share
+                the exact same binding instances—your D1 writes show up instantly in the dashboard.
+              </p>
+
+              <div className="mt-6 space-y-3 text-sm text-zinc-600">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500 mt-0.5">✓</span>
+                  <span>Your code stays untouched—no SDK required</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500 mt-0.5">✓</span>
+                  <span>Queue messages actually work and reach consumers</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-500 mt-0.5">✓</span>
+                  <span>Works with any framework—Hono, Remix, Next.js, etc.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Stack */}
       <section className="py-12 border-t border-zinc-200">
         <div className="mx-auto max-w-6xl px-8">
-          <div className="flex items-center justify-center gap-3 text-sm text-zinc-600">
-            <span>Powered by</span>
-            <span className="font-semibold text-zinc-800">Miniflare</span>
-            <span className="text-zinc-400">·</span>
-            <span>100% Cloudflare runtime compatibility</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-zinc-600">
+            <div className="flex items-center gap-2">
+              <span>Built on</span>
+              <span className="font-semibold text-zinc-800">Wrangler</span>
+            </div>
+            <span className="hidden sm:block text-zinc-300">|</span>
+            <div className="flex items-center gap-2">
+              <span>Runs on</span>
+              <span className="font-semibold text-zinc-800">workerd</span>
+              <span className="text-zinc-500">— the same runtime as production</span>
+            </div>
+            <span className="hidden sm:block text-zinc-300">|</span>
+            <div className="flex items-center gap-2">
+              <span>API powered by</span>
+              <span className="font-semibold text-zinc-800">Hono</span>
+            </div>
           </div>
         </div>
       </section>

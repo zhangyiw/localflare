@@ -86,8 +86,8 @@ This package provides the web-based dashboard UI for Localflare:
 | Package | Description |
 |---------|-------------|
 | [`localflare`](https://www.npmjs.com/package/localflare) | CLI tool (main package) |
-| [`localflare-core`](https://www.npmjs.com/package/localflare-core) | Miniflare wrapper and config parser |
-| [`localflare-server`](https://www.npmjs.com/package/localflare-server) | Dashboard API server |
+| [`localflare-core`](https://www.npmjs.com/package/localflare-core) | Config parser and utilities |
+| [`localflare-api`](https://www.npmjs.com/package/localflare-api) | Dashboard API worker |
 
 ## License
 
