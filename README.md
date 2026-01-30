@@ -26,6 +26,7 @@ npx localflare
 ```
 
 That's it! Localflare will:
+
 1. Detect your `wrangler.toml` configuration
 2. Start your worker at `http://localhost:8787`
 3. Open the dashboard at `https://studio.localflare.dev`
@@ -50,6 +51,9 @@ localflare
 
 # Custom port
 localflare --port 9000
+
+# Custom persistence directory
+localflare --persist-to ./my-data
 
 # Don't open browser automatically
 localflare --no-open
@@ -85,7 +89,7 @@ localflare attach
 localflare attach --port 9000
 ```
 
-Attach mode runs the Localflare API separately, sharing the same `.wrangler/state` directory with your dev server.
+Attach mode runs the Localflare API separately, sharing the same persistence directory with your dev server.
 
 ### Options
 
@@ -93,20 +97,22 @@ Attach mode runs the Localflare API separately, sharing the same `.wrangler/stat
 localflare [configPath] [options]
 
 Options:
-  -p, --port <port>  Worker port (default: 8787)
-  -v, --verbose      Verbose output
-  --no-open          Don't open browser automatically
-  --no-tui           Disable TUI, use simple console output
-  --dev              Open local dashboard instead of studio.localflare.dev
-  -h, --help         Display help
-  --version          Display version
+  -p, --port <port>        Worker port (default: 8787)
+  -v, --verbose            Verbose output
+  --no-open                Don't open browser automatically
+  --no-tui                 Disable TUI, use simple console output
+  --dev                    Open local dashboard instead of studio.localflare.dev
+  --persist-to <path>     Persistence directory for D1/KV/R2 data (default: .wrangler/state)
+  -h, --help               Display help
+  --version                Display version
 
 localflare attach [configPath] [options]
 
 Options:
-  -p, --port <port>  Localflare API port (default: 8788)
-  --no-open          Don't open browser automatically
-  --dev              Open local dashboard instead of studio.localflare.dev
+  -p, --port <port>        Localflare API port (default: 8788)
+  --no-open                Don't open browser automatically
+  --dev                    Open local dashboard instead of studio.localflare.dev
+  --persist-to <path>     Persistence directory for D1/KV/R2 data (default: .wrangler/state)
 ```
 
 ## Requirements
@@ -124,6 +130,7 @@ The Localflare dashboard runs at `studio.localflare.dev` and connects to your lo
 Recent Chrome updates may block [local network access](https://developer.chrome.com/blog/local-network-access) by default. This prevents the dashboard from connecting to your localhost worker.
 
 **To fix:**
+
 1. Click the lock/info icon in the URL bar (Site information)
 2. Find "Local network access" or "Insecure content"
 3. Set it to "Allow"
@@ -144,18 +151,19 @@ mkcert -install
 ```
 
 **Brave alternative:** You can also disable Brave Shields for `studio.localflare.dev`:
+
 1. Click the Brave Shields icon in the URL bar
 2. Toggle shields off for this site
 
 ### Supported Project Types
 
-| Project Type | Mode | Command |
-|--------------|------|---------|
-| Standard Workers | Default | `npx localflare` |
-| Hono, Remix, Astro, SvelteKit | Default | `npx localflare` |
-| OpenNext (Next.js on Workers) | Attach | `npx localflare attach` |
-| Nuxt on Workers | Attach | `npx localflare attach` |
-| Custom wrangler setups | Attach | `npx localflare attach` |
+| Project Type                  | Mode    | Command                 |
+| ----------------------------- | ------- | ----------------------- |
+| Standard Workers              | Default | `npx localflare`        |
+| Hono, Remix, Astro, SvelteKit | Default | `npx localflare`        |
+| OpenNext (Next.js on Workers) | Attach  | `npx localflare attach` |
+| Nuxt on Workers               | Attach  | `npx localflare attach` |
+| Custom wrangler setups        | Attach  | `npx localflare attach` |
 
 ## How It Works
 
@@ -176,6 +184,7 @@ Single wrangler dev Process
 ```
 
 This architecture means:
+
 - **Your code stays untouched** - No SDK, no modifications needed
 - **Real binding instances** - Not mocks, actual working bindings
 - **Queue messages actually work** - Send messages that your consumer receives
@@ -183,11 +192,11 @@ This architecture means:
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| `localflare` | CLI tool - the main entry point |
-| `localflare-api` | API worker that powers the dashboard |
-| `localflare-core` | Config parser and utilities |
+| Package                | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| `localflare`           | CLI tool - the main entry point                      |
+| `localflare-api`       | API worker that powers the dashboard                 |
+| `localflare-core`      | Config parser and utilities                          |
 | `localflare-dashboard` | React dashboard UI (hosted at studio.localflare.dev) |
 
 ## Development
@@ -218,20 +227,21 @@ pnpm run dev
 
 ## Supported Bindings
 
-| Binding | Support | Dashboard Features |
-|---------|---------|-------------------|
-| D1 | ✅ Full | Full-featured database studio (see below) |
-| KV | ✅ Full | Key browser, value editor, bulk operations |
-| R2 | ✅ Full | File browser, upload/download, metadata |
-| Durable Objects | ✅ Full | Instance listing, state inspection |
-| Queues | ✅ Full | Message viewer, send test messages |
-| Service Bindings | ✅ Full | Automatic proxying |
+| Binding          | Support | Dashboard Features                         |
+| ---------------- | ------- | ------------------------------------------ |
+| D1               | ✅ Full | Full-featured database studio (see below)  |
+| KV               | ✅ Full | Key browser, value editor, bulk operations |
+| R2               | ✅ Full | File browser, upload/download, metadata    |
+| Durable Objects  | ✅ Full | Instance listing, state inspection         |
+| Queues           | ✅ Full | Message viewer, send test messages         |
+| Service Bindings | ✅ Full | Automatic proxying                         |
 
 ### D1 Database Studio
 
 A comprehensive database management interface inspired by Drizzle Studio and Supabase:
 
 **Data Browser**
+
 - Paginated table data with customizable page sizes (25, 50, 100, 250 rows)
 - Resizable columns with drag handles
 - Column visibility toggle - show/hide columns
@@ -247,6 +257,7 @@ A comprehensive database management interface inspired by Drizzle Studio and Sup
   - Auto-skips auto-increment primary keys
 
 **SQL Query Editor**
+
 - Syntax highlighting with CodeMirror
 - SQL autocomplete for tables, columns, and keywords
 - Execute with Cmd/Ctrl + Enter keyboard shortcut
@@ -254,6 +265,7 @@ A comprehensive database management interface inspired by Drizzle Studio and Sup
 - Query history with re-run capability (persisted in localStorage)
 
 **Schema Viewer**
+
 - View table structure with column definitions
 - Column types and primary key indicators
 - Row counts per table
@@ -265,6 +277,7 @@ We welcome contributions! Whether you're fixing bugs, adding features, or improv
 Check out our **[Contributing Guide](CONTRIBUTING.md)** to get started.
 
 Before contributing:
+
 1. Check existing [issues](https://github.com/rohanprasadofficial/localflare/issues) and [discussions](https://github.com/rohanprasadofficial/localflare/discussions)
 2. Read the [Contributing Guide](CONTRIBUTING.md)
 3. Follow the code style and conventions
@@ -277,6 +290,7 @@ If you find Localflare useful, please consider supporting its development:
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink)](https://github.com/sponsors/rohanprasadofficial)
 
 Your sponsorship helps with:
+
 - Continued development and maintenance
 - New features and binding support
 - Documentation improvements

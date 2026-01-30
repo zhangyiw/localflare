@@ -23,6 +23,10 @@ cli
   .option('--dev', 'Open local dashboard (localhost:5174) instead of studio.localflare.dev')
   .option('--no-open', 'Do not open browser automatically')
   .option('--no-tui', 'Disable TUI, use simple console output')
+  .option(
+    '--persist-to <path>',
+    'Persistence directory for D1/KV/R2 data (default: .wrangler/state)',
+  )
   .action(async (configPath: string | undefined, options) => {
     console.log('')
     console.log(pc.bold(pc.cyan('  ⚡ Localflare')))
@@ -78,7 +82,9 @@ cli
       // localflare-api is PRIMARY (first) - handles /__localflare/* and proxies rest to user's worker
       // user's worker is SECONDARY (second) - accessed via service binding
       // --persist-to ensures both workers share the same state directory
-      const persistPath = join(dirname(resolvedConfig), '.wrangler', 'state')
+      const persistPath = options.persistTo
+        ? resolve(options.persistTo)
+        : join(dirname(resolvedConfig), '.wrangler', 'state')
 
       // Build wrangler args
       // Use passthrough args (after --) for any wrangler-specific options
@@ -225,6 +231,10 @@ cli
   .option('-p, --port <port>', 'Port for Localflare API', { default: 8788 })
   .option('--dev', 'Open local dashboard (localhost:5174) instead of studio.localflare.dev')
   .option('--no-open', 'Do not open browser automatically')
+  .option(
+    '--persist-to <path>',
+    'Persistence directory for D1/KV/R2 data (default: .wrangler/state)',
+  )
   .action(async (configPath: string | undefined, options) => {
     console.log('')
     console.log(pc.bold(pc.cyan('  ⚡ Localflare')))
@@ -270,8 +280,10 @@ cli
       console.log(pc.dim(`  🚀 Starting Localflare API on port ${apiPort}...`))
       console.log('')
 
-      // Run localflare-api as standalone worker sharing the same state directory
-      const persistPath = join(dirname(resolvedConfig), '.wrangler', 'state')
+      // --persist-to ensures both workers share the same state directory
+      const persistPath = options.persistTo
+        ? resolve(options.persistTo)
+        : join(dirname(resolvedConfig), '.wrangler', 'state')
 
       const wranglerArgs = [
         'wrangler', 'dev',
