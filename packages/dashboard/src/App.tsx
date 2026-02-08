@@ -9,6 +9,7 @@ import { DOExplorer } from '@/components/do/DOExplorer'
 import { QueuesExplorer } from '@/components/queues/QueuesExplorer'
 import { TailLogs } from '@/components/logs/TailLogs'
 import { NetworkInspector } from '@/components/network/NetworkInspector'
+import { AnalyticsExplorer } from '@/components/analytics/AnalyticsExplorer'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ function App() {
             <Route path="network" element={<NetworkInspector />} />
             <Route path="logs" element={<TailLogs />} />
           </Route>
+          <Route path="/analytics" element={<AnalyticsExplorer />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

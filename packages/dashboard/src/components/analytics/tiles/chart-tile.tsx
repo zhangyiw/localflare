@@ -1,0 +1,56 @@
+import { AreaChart } from '@/components/analytics/charts/area-chart';
+import { BarChart } from '@/components/analytics/charts/bar-chart';
+import { LineChart } from '@/components/analytics/charts/line-chart';
+import { PieChart } from '@/components/analytics/charts/pie-chart';
+import { ScatterChart } from '@/components/analytics/charts/scatter-chart';
+import { cn } from '@/lib/utils';
+import type { ChartConfig, ChartType } from '@/components/analytics/types/dashboard';
+
+interface ChartTileProps {
+  config: ChartConfig;
+  data: Record<string, unknown>[];
+  className?: string;
+}
+
+export function ChartTile({ config, data, className }: ChartTileProps) {
+  if (!data || data.length === 0) {
+    return (
+      <div className={cn('flex h-full w-full items-center justify-center text-sm text-muted-foreground', className)}>
+        No data available
+      </div>
+    );
+  }
+
+  const chartProps = {
+    data,
+    xAxisKey: config.xAxisKey,
+    yAxisKeys: config.yAxisKeys,
+    showLegend: config.showLegend,
+    showGrid: config.showGrid,
+    colors: config.colors,
+  };
+
+  const chartComponents: Record<Exclude<ChartType, 'table' | 'stat'>, React.ReactElement> = {
+    area: <AreaChart {...chartProps} />,
+    bar: <BarChart {...chartProps} />,
+    line: <LineChart {...chartProps} />,
+    pie: <PieChart {...chartProps} />,
+    scatter: <ScatterChart {...chartProps} />,
+  };
+
+  const ChartComponent = chartComponents[config.type as Exclude<ChartType, 'table' | 'stat'>];
+
+  if (!ChartComponent) {
+    return (
+      <div className={cn('flex h-full w-full items-center justify-center text-sm text-muted-foreground', className)}>
+        Unknown chart type: {config.type}
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('h-full w-full', className)}>
+      {ChartComponent}
+    </div>
+  );
+}

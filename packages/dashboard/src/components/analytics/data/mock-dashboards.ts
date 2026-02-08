@@ -1,0 +1,221 @@
+import type { Dashboard } from '@/components/analytics/types/dashboard';
+
+export const MOCK_DASHBOARDS: Dashboard[] = [
+  {
+    id: 'dash-dummy',
+    name: '[Dummy] Sample Dashboard',
+    description: 'Example dashboard showing all chart types - delete this and create your own!',
+    gridColumns: 4,
+    tiles: [
+      // Row 1: Stat cards
+      {
+        id: 'tile-stat-1',
+        title: 'Total Page Views',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT SUM(double1) as totalViews FROM sample_analytics',
+        chartConfig: {
+          type: 'stat',
+          statConfig: {
+            valueKey: 'totalViews',
+            label: 'Page Views',
+            format: 'number',
+          },
+        },
+        position: { x: 0, y: 0, width: 1, height: 1 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-stat-2',
+        title: 'Unique Visitors',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT SUM(double2) as totalVisitors FROM sample_analytics',
+        chartConfig: {
+          type: 'stat',
+          statConfig: {
+            valueKey: 'totalVisitors',
+            label: 'Visitors',
+            format: 'number',
+          },
+        },
+        position: { x: 1, y: 0, width: 1, height: 1 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-stat-3',
+        title: 'Bounce Rate',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT AVG(double3) as avgBounceRate FROM sample_analytics',
+        chartConfig: {
+          type: 'stat',
+          statConfig: {
+            valueKey: 'avgBounceRate',
+            label: 'Bounce Rate',
+            format: 'percent',
+            suffix: '%',
+          },
+        },
+        position: { x: 2, y: 0, width: 1, height: 1 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-stat-4',
+        title: 'Avg Load Time',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT AVG(double4) as avgLoadTime FROM sample_analytics',
+        chartConfig: {
+          type: 'stat',
+          statConfig: {
+            valueKey: 'avgLoadTime',
+            label: 'Load Time',
+            format: 'number',
+            suffix: 's',
+          },
+        },
+        position: { x: 3, y: 0, width: 1, height: 1 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+
+      // Row 2: Area and Line charts
+      {
+        id: 'tile-area',
+        title: 'Traffic Over Time (Area)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT toDate(timestamp) as date, SUM(double1) as views, SUM(double2) as visitors FROM sample_analytics GROUP BY date ORDER BY date',
+        chartConfig: {
+          type: 'area',
+          showLegend: true,
+          showGrid: true,
+          xAxisKey: 'date',
+          yAxisKeys: ['views', 'visitors'],
+        },
+        position: { x: 0, y: 1, width: 2, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-line',
+        title: 'Hourly Requests (Line)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT toStartOfHour(timestamp) as hour, COUNT() as requests FROM sample_analytics GROUP BY hour ORDER BY hour',
+        chartConfig: {
+          type: 'line',
+          showLegend: false,
+          showGrid: true,
+          xAxisKey: 'hour',
+          yAxisKeys: ['requests'],
+        },
+        position: { x: 2, y: 1, width: 2, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+
+      // Row 3: Bar and Pie charts
+      {
+        id: 'tile-bar',
+        title: 'Top Pages (Bar)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT blob1 as path, SUM(double1) as views FROM sample_analytics GROUP BY path ORDER BY views DESC LIMIT 7',
+        chartConfig: {
+          type: 'bar',
+          showLegend: false,
+          showGrid: true,
+          xAxisKey: 'path',
+          yAxisKeys: ['views'],
+        },
+        position: { x: 0, y: 3, width: 2, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-pie-country',
+        title: 'By Country (Pie)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT blob2 as country, SUM(double2) as visitors FROM sample_analytics GROUP BY country',
+        chartConfig: {
+          type: 'pie',
+          showLegend: true,
+          xAxisKey: 'country',
+          yAxisKeys: ['visitors'],
+        },
+        position: { x: 2, y: 3, width: 1, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-pie-device',
+        title: 'By Device (Pie)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT blob3 as device, SUM(double2) as visitors FROM sample_analytics GROUP BY device',
+        chartConfig: {
+          type: 'pie',
+          showLegend: true,
+          xAxisKey: 'device',
+          yAxisKeys: ['visitors'],
+        },
+        position: { x: 3, y: 3, width: 1, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+
+      // Row 4: Scatter and Table
+      {
+        id: 'tile-scatter',
+        title: 'Load Time vs Bounce Rate (Scatter)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT double4 as loadTime, double3 as bounceRate, double2 as visitors FROM sample_analytics scatter correlation',
+        chartConfig: {
+          type: 'scatter',
+          showLegend: false,
+          showGrid: true,
+          xAxisKey: 'loadTime',
+          yAxisKeys: ['bounceRate'],
+        },
+        position: { x: 0, y: 5, width: 2, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+      {
+        id: 'tile-table',
+        title: 'API Endpoints (Table)',
+        dataSourceId: 'ds-dummy',
+        query: 'SELECT blob1 as endpoint, blob2 as method, double1 as requests, double2 as avgLatency, double3 as errorRate FROM api_metrics',
+        chartConfig: {
+          type: 'table',
+        },
+        position: { x: 2, y: 5, width: 2, height: 2 },
+        createdAt: '2024-12-20T00:00:00Z',
+        updatedAt: '2024-12-20T00:00:00Z',
+      },
+    ],
+    filters: [
+      {
+        id: 'filter-dummy-1',
+        name: 'Date Range',
+        parameterName: 'date_range',
+        type: 'dateRange',
+        defaultValue: ['2024-12-01', '2024-12-25'],
+        appliesTo: 'all',
+      },
+      {
+        id: 'filter-dummy-2',
+        name: 'Country',
+        parameterName: 'country',
+        type: 'dropdown',
+        options: [
+          { label: 'All Countries', value: '' },
+          { label: 'USA', value: 'USA' },
+          { label: 'UK', value: 'UK' },
+          { label: 'Germany', value: 'Germany' },
+        ],
+        defaultValue: '',
+        appliesTo: 'all',
+      },
+    ],
+    createdAt: '2024-12-20T00:00:00Z',
+    updatedAt: '2024-12-20T00:00:00Z',
+  },
+];

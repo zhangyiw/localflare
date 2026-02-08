@@ -8,6 +8,7 @@ import {
   TaskDone01Icon,
   Settings02Icon,
   ArrowRight01Icon,
+  DashboardSpeed01Icon,
 } from "@hugeicons/core-free-icons"
 import { Link } from "react-router-dom"
 import { bindingsApi } from "@/lib/api"
@@ -204,6 +205,36 @@ export function Home() {
               </Link>
             )
           })}
+
+          {/* Analytics Explorer */}
+          <Link to="/analytics">
+            <div className="group border border-border rounded-lg bg-card hover:border-primary/50 hover:shadow-sm transition-all">
+              <div className="p-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-orange-500/10">
+                      <HugeiconsIcon
+                        icon={DashboardSpeed01Icon}
+                        className="size-5 text-orange-500"
+                        strokeWidth={2}
+                      />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-sm">Analytics Explorer</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Query and visualize Analytics Engine data
+                      </p>
+                    </div>
+                  </div>
+                  <HugeiconsIcon
+                    icon={ArrowRight01Icon}
+                    className="size-4 text-muted-foreground group-hover:text-foreground transition-colors"
+                    strokeWidth={2}
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
 
           {/* Environment Variables - not clickable */}
           {bindings?.bindings.vars && bindings.bindings.vars.length > 0 && (
