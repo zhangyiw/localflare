@@ -23,6 +23,7 @@ import { createQueuesRoutes } from './routes/queues.js'
 import { createDORoutes } from './routes/do.js'
 import { createLogsRoutes } from './routes/logs.js'
 import { createRequestsRoutes } from './routes/requests.js'
+import { createAnalyticsRoutes } from './routes/analytics.js'
 import { requestStore, logStore } from './utils/request-store.js'
 
 const app = new Hono<{ Bindings: Env }>()
@@ -61,6 +62,7 @@ app.route(`${API_PREFIX}/queues`, createQueuesRoutes())
 app.route(`${API_PREFIX}/do`, createDORoutes())
 app.route(`${API_PREFIX}/logs`, createLogsRoutes())
 app.route(`${API_PREFIX}/requests`, createRequestsRoutes())
+app.route(`${API_PREFIX}/analytics`, createAnalyticsRoutes())
 
 // Proxy all other requests to user's worker (if available via service binding)
 // Captures request/response for the Network inspector

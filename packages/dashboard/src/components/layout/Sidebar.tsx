@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { NavLink } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react"
 import {
@@ -13,6 +13,7 @@ import {
   Home01Icon,
   CommandLineIcon,
   GlobalIcon,
+  DashboardSpeed01Icon,
 } from "@hugeicons/core-free-icons"
 import { bindingsApi } from "@/lib/api"
 import { cn } from "@/lib/utils"
@@ -260,6 +261,21 @@ export function Sidebar() {
           ))}
         </nav>
       </ScrollArea>
+
+      {/* Analytics Explorer */}
+      <div className="px-2 pb-2">
+        <Link
+          to="/analytics"
+          className={cn(
+            "flex items-center gap-2.5 px-2.5 py-2 rounded-md text-[13px] font-medium transition-colors",
+            isCollapsed && "justify-center px-2",
+            "text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+          )}
+        >
+          <HugeiconsIcon icon={DashboardSpeed01Icon} className="size-4 shrink-0 text-orange-500" strokeWidth={2} />
+          {!isCollapsed && <span>Analytics Explorer</span>}
+        </Link>
+      </div>
 
       {/* Footer */}
       <div className="p-3 border-t border-sidebar-border">

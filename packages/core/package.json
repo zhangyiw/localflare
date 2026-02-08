@@ -1,6 +1,6 @@
 {
   "name": "localflare-core",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Core utilities for Localflare - config parsing and binding discovery",
   "type": "module",
   "main": "./dist/index.js",
